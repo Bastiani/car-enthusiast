@@ -1,7 +1,7 @@
-import * as React from 'react';
-import { FlatList } from 'react-native';
+import * as React from "react";
+import { FlatList } from "react-native";
 
-import FlatListItem from './FlatListItem';
+import FlatListItem from "./FlatListItem";
 
 class FlatListCustom extends React.PureComponent {
   state = { selected: (new Map(): Map<string, boolean>) };
@@ -9,9 +9,7 @@ class FlatListCustom extends React.PureComponent {
   _keyExtractor = (item, index) => item.id;
 
   _onPressItem = (id: string) => {
-    // updater functions are preferred for transactional updates
-    this.setState((state) => {
-      // copy the map rather than modifying state.
+    this.setState(state => {
       const selected = new Map(state.selected);
       selected.set(id, !selected.get(id)); // toggle
       return { selected };
@@ -22,6 +20,7 @@ class FlatListCustom extends React.PureComponent {
 
   _renderItem = ({ item }) => (
     <FlatListItem
+      key={item.date}
       id={item.date}
       onPressItem={this._onPressItem}
       selected={!!this.state.selected.get(item.id)}
@@ -36,6 +35,7 @@ class FlatListCustom extends React.PureComponent {
         extraData={this.state}
         keyExtractor={this._keyExtractor}
         renderItem={this._renderItem}
+        {...this.props}
       />
     );
   }

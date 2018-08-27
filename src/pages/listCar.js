@@ -1,9 +1,10 @@
 // @flow
-import * as React from 'react';
-import { ScrollView, Button, AsyncStorage } from 'react-native';
-import styled from 'styled-components/native';
+import * as React from "react";
+import { ScrollView, Button, RefreshControl } from "react-native";
+import styled from "styled-components/native";
 
-import FlatListCustom from '../components/common/FlatListCustom';
+import FlatListCustom from "../components/common/FlatListCustom";
+import { withStorage } from "../components/AsyncStorage/StorageHoc";
 
 const Container = styled.View`
   flex: 1;
@@ -12,32 +13,42 @@ const Container = styled.View`
 `;
 
 class ListCar extends React.PureComponent {
-  state = { listCars: [] };
+  state = { refreshing: false };
 
-  async componentDidMount() {
-    this.getCars();
-  }
-
-  getCars = async () => {
-    const list = await AsyncStorage.getItem('@Car:details');
-    this.setState({ listCars: JSON.parse(list) });
+  handleCarView = async id => {
+    const { navigation } = this.props;
+    navigation.navigate("ViewCar", { date: id });
   };
 
-  handleCarView = async (id) => {
-    const { navigation } = this.props;
-    navigation.navigate('ViewCar', { carId: id });
+  onRefresh = async () => {
+    const { refreshStorage } = this.props;
+    this.setState({ refreshing: true });
+    await refreshStorage();
+    this.setState({ refreshing: false });
   };
 
   render() {
-    const { navigation } = this.props;
-    const { listCars } = this.state;
+    const { navigation, storageResult } = this.props;
+    const { refreshing } = this.state;
 
     return (
       <ScrollView>
         <Container>
-          <Button title="Create Car" onPress={() => navigation.navigate('CreateCar')} />
-          {listCars.length >= 1 && (
-            <FlatListCustom data={listCars} onItemClick={id => this.handleCarView(id)} />
+          <Button
+            title="Create Car"
+            onPress={() => navigation.navigate("CreateCar")}
+          />
+          {storageResult.length >= 1 && (
+            <FlatListCustom
+              data={storageResult}
+              onItemClick={id => this.handleCarView(id)}
+              refreshControl={(
+                <RefreshControl
+                  refreshing={refreshing}
+                  onRefresh={this.onRefresh}
+                />
+)}
+            />
           )}
         </Container>
       </ScrollView>
@@ -45,4 +56,4 @@ class ListCar extends React.PureComponent {
   }
 }
 
-export default ListCar;
+export default withStorage(ListCar, "@Car:details");

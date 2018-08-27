@@ -1,12 +1,13 @@
 // @flow
-import React from 'react';
-import { ScrollView, Button, AsyncStorage } from 'react-native';
-import styled from 'styled-components/native';
-import { withFormik } from 'formik';
-import * as yup from 'yup';
-import moment from 'moment';
+import React from "react";
+import { ScrollView, Button } from "react-native";
+import styled from "styled-components/native";
+import { withFormik } from "formik";
+import * as yup from "yup";
+import moment from "moment";
 
-import TextField from '../components/common/TextFieldFormik';
+import TextField from "../components/common/TextFieldFormik";
+import { withStorage } from "../components/AsyncStorage/StorageHoc";
 
 const Container = styled.View`
   flex: 1;
@@ -14,7 +15,7 @@ const Container = styled.View`
   padding: 10px;
 `;
 
-const Form = ({ navigation, handleSubmit }) => (
+const Form = ({ handleSubmit }) => (
   <ScrollView>
     <Container>
       <TextField label="Manufacturer" name="manufacturer" />
@@ -25,28 +26,21 @@ const Form = ({ navigation, handleSubmit }) => (
   </ScrollView>
 );
 
-export default withFormik({
+const createCarForm = withFormik({
   mapPropsToValues: () => ({
-    manufacturer: '',
-    model: '',
-    year: '',
-    date: moment().format(),
+    manufacturer: "",
+    model: "",
+    year: "",
+    date: moment().format()
   }),
   validationSchema: yup.object().shape({
-    manufacturer: yup.string().required('Preencha o campo Fabricante'),
-    model: yup.string().required('Preencha o campo Modelo'),
+    manufacturer: yup.string().required("Preencha o campo Fabricante"),
+    model: yup.string().required("Preencha o campo Modelo")
   }),
-  handleSubmit: async (values) => {
-    try {
-      const existingCars = await AsyncStorage.getItem('@Car:details');
-      let newCar = JSON.parse(existingCars);
-      if (!newCar) {
-        newCar = [];
-      }
-      newCar.push(values);
-      await AsyncStorage.setItem('@Car:details', JSON.stringify(newCar));
-    } catch (error) {
-      alert(error);
-    }
-  },
+  handleSubmit: async (values, { props: { navigation, createRegister } }) => {
+    await createRegister(values);
+    navigation.navigate("ListCar");
+  }
 })(Form);
+
+export default withStorage(createCarForm, "@Car:details");

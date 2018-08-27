@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest"
+    "test": "jest",
+    "build": "babel src/ -d lib/",
+    "prepublish": "yarn run build"
   },
   "dependencies": {
     "formik": "^1.0.3",
@@ -25,9 +27,11 @@
     "babel-preset-react-native": "^5",
     "eslint": "^5.4.0",
     "eslint-config-airbnb": "^17.1.0",
+    "eslint-plugin-flowtype": "^2.50.0",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jsx-a11y": "^6.1.1",
     "eslint-plugin-react": "^7.11.1",
+    "eslint-plugin-react-native": "^3.2.1",
     "flow-bin": "^0.79.1",
     "jest": "23.5.0",
     "react-test-renderer": "16.4.1"
