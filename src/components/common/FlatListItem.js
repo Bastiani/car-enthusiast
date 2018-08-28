@@ -1,5 +1,6 @@
-import * as React from 'react';
-import { TouchableOpacity, View, Text } from 'react-native';
+import * as React from "react";
+import { TouchableOpacity, View, Text, Alert } from "react-native";
+import Swipeout from "react-native-swipeout";
 
 class ListItem extends React.PureComponent {
   _onPress = () => {
@@ -8,14 +9,26 @@ class ListItem extends React.PureComponent {
   };
 
   render() {
-    const { selected, title } = this.props;
-    const textColor = selected ? 'red' : 'black';
+    const { selected, title, deleteRegister } = this.props;
+    const textColor = selected ? "red" : "black";
+    const swipeProps = {
+      autoClose: true,
+      right: [
+        {
+          onPress: async () => deleteRegister(),
+          text: "Delete",
+          type: "delete"
+        }
+      ]
+    };
     return (
-      <TouchableOpacity onPress={this._onPress}>
-        <View>
-          <Text style={{ color: textColor }}>{title}</Text>
-        </View>
-      </TouchableOpacity>
+      <Swipeout {...swipeProps}>
+        <TouchableOpacity onPress={this._onPress}>
+          <View>
+            <Text style={{ color: textColor }}>{title}</Text>
+          </View>
+        </TouchableOpacity>
+      </Swipeout>
     );
   }
 }

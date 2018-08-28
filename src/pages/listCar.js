@@ -28,7 +28,7 @@ class ListCar extends React.PureComponent {
   };
 
   render() {
-    const { navigation, storageResult } = this.props;
+    const { navigation, storageResult, deleteRegister } = this.props;
     const { refreshing } = this.state;
 
     return (
@@ -42,6 +42,7 @@ class ListCar extends React.PureComponent {
             <FlatListCustom
               data={storageResult}
               onItemClick={id => this.handleCarView(id)}
+              deleteRegister={deleteRegister}
               refreshControl={(
                 <RefreshControl
                   refreshing={refreshing}

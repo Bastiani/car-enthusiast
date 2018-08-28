@@ -61,13 +61,14 @@ export function withStorage(WrappedComponent, key, getParams) {
       }
     };
 
-    deleteRegister = async () => {
+    deleteRegister = async args => {
+      console.log(args, Object.keys(args)[0]);
+
       try {
         const existingItens = await AsyncStorage.getItem(key);
         const itens = JSON.parse(existingItens);
-        const params = getParams(this.props);
-        const param = Object.keys(params)[0];
-        const paramVal = params[Object.keys(params)[0]];
+        const param = Object.keys(args)[0];
+        const paramVal = args[Object.keys(args)[0]];
         const newItens = itens.filter(val => val[param] != paramVal);
         await AsyncStorage.setItem(key, JSON.stringify(newItens));
         this.setState({ storageResult: newItens });
@@ -91,6 +92,7 @@ export function withStorage(WrappedComponent, key, getParams) {
           storageResult={storageResult}
           refreshStorage={this.refreshStorage}
           createRegister={this.createRegister}
+          deleteRegister={this.deleteRegister}
           {...this.props}
         />
       );

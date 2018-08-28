@@ -6,7 +6,7 @@ import FlatListItem from "./FlatListItem";
 class FlatListCustom extends React.PureComponent {
   state = { selected: (new Map(): Map<string, boolean>) };
 
-  _keyExtractor = (item, index) => item.id;
+  _keyExtractor = item => item.date;
 
   _onPressItem = (id: string) => {
     this.setState(state => {
@@ -23,8 +23,9 @@ class FlatListCustom extends React.PureComponent {
       key={item.date}
       id={item.date}
       onPressItem={this._onPressItem}
-      selected={!!this.state.selected.get(item.id)}
+      selected={!!this.state.selected.get(item.date)}
       title={item.model}
+      deleteRegister={() => this.props.deleteRegister({ date: item.date })}
     />
   );
 
