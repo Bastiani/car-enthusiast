@@ -11,10 +11,21 @@ const Container = styled.View`
   padding: 5px;
 `;
 
+const FlatListStyled = styled(FlatListCustom)`
+  height: 300px;
+`;
+
 class ListCar extends React.PureComponent {
   state = { refreshing: false };
 
-  handleCarView = async id => {
+  componentDidMount() {
+    const { navigation } = this.props;
+    this._subscribe = navigation.addListener("didFocus", () => {
+      this.onRefresh();
+    });
+  }
+
+  handleCarView = id => {
     const { navigation } = this.props;
 
     navigation.navigate("ViewCar", { id });
@@ -40,7 +51,7 @@ class ListCar extends React.PureComponent {
           />
           {storageResult &&
             storageResult.length >= 1 && (
-              <FlatListCustom
+              <FlatListStyled
                 data={storageResult}
                 onItemClick={id => this.handleCarView(id)}
                 deleteRegister={deleteRegister}

@@ -43,8 +43,9 @@ const formWithFormik = withFormik({
     manufacturer: yup.string().required("Preencha o campo Fabricante"),
     model: yup.string().required("Preencha o campo Modelo")
   }),
-  handleSubmit: async (values, { props: { alterRegister } }) => {
+  handleSubmit: async (values, { props: { alterRegister, navigation } }) => {
     await alterRegister(values);
+    navigation.navigate("ListCar");
   }
 })(ViewCar);
 

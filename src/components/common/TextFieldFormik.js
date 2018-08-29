@@ -8,6 +8,7 @@ const Input = styled.TextInput`
   border-bottom-color: black;
   border-bottom-width: 1px;
   margin-bottom: 10px;
+  padding: -2px;
 `;
 
 const Error = styled.Text`

@@ -16,18 +16,10 @@ type State = { storageResult: Array<Car> };
 
 export function withStorage(WrappedComponent, key, getParams) {
   return class extends React.Component<Props, State> {
-    _hasUnmounted = false;
-
     state = { storageResult: null };
 
     async componentDidMount() {
-      if (!this._hasUnmounted) {
-        isFunction(getParams) ? this.getRegister() : this.getAll();
-      }
-    }
-
-    componentWillUnmount() {
-      this._hasUnmounted = true;
+      isFunction(getParams) ? this.getRegister() : this.getAll();
     }
 
     getRegister = async () => {
@@ -43,7 +35,8 @@ export function withStorage(WrappedComponent, key, getParams) {
     getAll = async () => {
       const list = await AsyncStorage.getItem(key);
       const listObj = JSON.parse(list);
-      this.setState({ storageResult: listObj });
+
+      this.setState({ storageResult: listObj || [] });
     };
 
     refreshStorage = async () => this.getAll();
@@ -79,11 +72,8 @@ export function withStorage(WrappedComponent, key, getParams) {
     };
 
     alterRegister = async values => {
-      const list = await AsyncStorage.getItem(key);
-      const listObj = JSON.parse(list);
-      const register = listObj.filter(val => val.id === values.id)[0];
       await this.deleteRegister({ id: values.id });
-      await this.createRegister(register);
+      await this.createRegister(values);
     };
 
     render() {
