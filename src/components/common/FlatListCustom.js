@@ -1,12 +1,13 @@
 import * as React from "react";
 import { FlatList } from "react-native";
+import idx from "idx";
 
 import FlatListItem from "./FlatListItem";
 
 class FlatListCustom extends React.PureComponent {
   state = { selected: (new Map(): Map<string, boolean>) };
 
-  _keyExtractor = item => item.date;
+  _keyExtractor = (item, index) => item.id;
 
   _onPressItem = (id: string) => {
     this.setState(state => {
@@ -20,12 +21,14 @@ class FlatListCustom extends React.PureComponent {
 
   _renderItem = ({ item }) => (
     <FlatListItem
-      key={item.date}
-      id={item.date}
+      key={idx(item, _ => _.id)}
+      id={idx(item, _ => _.id)}
       onPressItem={this._onPressItem}
-      selected={!!this.state.selected.get(item.date)}
+      selected={!!this.state.selected.get(idx(item, _ => _.id))}
       title={item.model}
-      deleteRegister={() => this.props.deleteRegister({ date: item.date })}
+      deleteRegister={() =>
+        this.props.deleteRegister({ id: idx(item, _ => _.id) })
+      }
     />
   );
 

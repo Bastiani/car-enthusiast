@@ -1,8 +1,8 @@
-import * as React from 'react';
-import { View, Text } from 'react-native';
-import styled from 'styled-components/native';
-import get from 'lodash/get';
-import { connect } from 'formik';
+import * as React from "react";
+import { View, Text } from "react-native";
+import styled from "styled-components/native";
+import get from "lodash/get";
+import { connect } from "formik";
 
 const Input = styled.TextInput`
   border-bottom-color: black;
@@ -27,7 +27,7 @@ class TextFieldFormik extends React.Component {
   render() {
     const { name, label, formik } = this.props;
     const { values, errors, touched } = formik;
-    const value = get(values, name, '');
+    const value = get(values, name, "");
     const wasTouched = get(touched, name);
     const fieldError = wasTouched && get(errors, name, null);
 

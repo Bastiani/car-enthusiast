@@ -9,13 +9,22 @@ class ListItem extends React.PureComponent {
   };
 
   render() {
-    const { selected, title, deleteRegister } = this.props;
-    const textColor = selected ? "red" : "black";
+    const { title, deleteRegister } = this.props;
+    // const textColor = selected ? "red" : "black";
     const swipeProps = {
       autoClose: true,
       right: [
         {
-          onPress: async () => deleteRegister(),
+          onPress: () =>
+            Alert.alert(
+              "Alert",
+              "Are you sure you want to delete?",
+              [
+                { text: "No", onPress: () => {}, style: "cancel" },
+                { text: "Yes", onPress: () => deleteRegister() }
+              ],
+              { cancelable: true }
+            ),
           text: "Delete",
           type: "delete"
         }
@@ -25,7 +34,7 @@ class ListItem extends React.PureComponent {
       <Swipeout {...swipeProps}>
         <TouchableOpacity onPress={this._onPress}>
           <View>
-            <Text style={{ color: textColor }}>{title}</Text>
+            <Text>{title}</Text>
           </View>
         </TouchableOpacity>
       </Swipeout>

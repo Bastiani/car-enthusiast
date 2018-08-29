@@ -8,6 +8,7 @@ import moment from "moment";
 
 import TextField from "../components/common/TextFieldFormik";
 import { withStorage } from "../components/AsyncStorage/StorageHoc";
+import { objectId } from "../utils";
 
 const Container = styled.View`
   flex: 1;
@@ -28,10 +29,11 @@ const Form = ({ handleSubmit }) => (
 
 const createCarForm = withFormik({
   mapPropsToValues: () => ({
+    id: objectId(),
     manufacturer: "",
     model: "",
     year: "",
-    date: moment().format()
+    createdAt: moment().format()
   }),
   validationSchema: yup.object().shape({
     manufacturer: yup.string().required("Preencha o campo Fabricante"),

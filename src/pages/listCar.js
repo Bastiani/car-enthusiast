@@ -1,4 +1,3 @@
-// @flow
 import * as React from "react";
 import { ScrollView, Button, RefreshControl } from "react-native";
 import styled from "styled-components/native";
@@ -17,7 +16,8 @@ class ListCar extends React.PureComponent {
 
   handleCarView = async id => {
     const { navigation } = this.props;
-    navigation.navigate("ViewCar", { date: id });
+
+    navigation.navigate("ViewCar", { id });
   };
 
   onRefresh = async () => {
@@ -38,19 +38,20 @@ class ListCar extends React.PureComponent {
             title="Create Car"
             onPress={() => navigation.navigate("CreateCar")}
           />
-          {storageResult.length >= 1 && (
-            <FlatListCustom
-              data={storageResult}
-              onItemClick={id => this.handleCarView(id)}
-              deleteRegister={deleteRegister}
-              refreshControl={(
-                <RefreshControl
-                  refreshing={refreshing}
-                  onRefresh={this.onRefresh}
-                />
+          {storageResult &&
+            storageResult.length >= 1 && (
+              <FlatListCustom
+                data={storageResult}
+                onItemClick={id => this.handleCarView(id)}
+                deleteRegister={deleteRegister}
+                refreshControl={(
+                  <RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={this.onRefresh}
+                  />
 )}
-            />
-          )}
+              />
+            )}
         </Container>
       </ScrollView>
     );

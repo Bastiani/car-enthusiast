@@ -32,6 +32,7 @@ const formWithFormik = withFormik({
     const { storageResult } = props;
 
     return {
+      id: idx(storageResult, _ => _.id) || "",
       manufacturer: idx(storageResult, _ => _.manufacturer) || "",
       model: idx(storageResult, _ => _.model) || "",
       year: idx(storageResult, _ => _.year) || "",
@@ -42,21 +43,11 @@ const formWithFormik = withFormik({
     manufacturer: yup.string().required("Preencha o campo Fabricante"),
     model: yup.string().required("Preencha o campo Modelo")
   }),
-  handleSubmit: values => {
-    // try {
-    //   const existingCars = await AsyncStorage.getItem("@Car:details");
-    //   let newCar = JSON.parse(existingCars);
-    //   if (!newCar) {
-    //     newCar = [];
-    //   }
-    //   newCar.push(values);
-    //   await AsyncStorage.setItem("@Car:details", JSON.stringify(newCar));
-    // } catch (error) {
-    //   alert(error);
-    // }
+  handleSubmit: async (values, { props: { alterRegister } }) => {
+    await alterRegister(values);
   }
 })(ViewCar);
 
 export default withStorage(formWithFormik, "@Car:details", props => ({
-  date: props.navigation.getParam("date", "NO-ID")
+  id: props.navigation.getParam("id", "NO-ID")
 }));

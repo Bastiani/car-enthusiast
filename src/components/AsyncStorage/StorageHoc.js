@@ -5,6 +5,7 @@ import { AsyncStorage, Text } from "react-native";
 import { isFunction } from "../../utils";
 
 type Car = {
+  id: string,
   manufacturer: string,
   model: string,
   year: string,
@@ -15,31 +16,33 @@ type State = { storageResult: Array<Car> };
 
 export function withStorage(WrappedComponent, key, getParams) {
   return class extends React.Component<Props, State> {
+    _hasUnmounted = false;
+
     state = { storageResult: null };
 
     async componentDidMount() {
-      isFunction(getParams) ? this.getRegister() : this.getAll();
+      if (!this._hasUnmounted) {
+        isFunction(getParams) ? this.getRegister() : this.getAll();
+      }
+    }
+
+    componentWillUnmount() {
+      this._hasUnmounted = true;
     }
 
     getRegister = async () => {
       const list = await AsyncStorage.getItem(key);
       const listObj = JSON.parse(list);
-      if (isFunction(getParams)) {
-        const params = getParams(this.props);
-        const param = Object.keys(params)[0];
-        const paramVal = params[Object.keys(params)[0]];
-        const register = listObj.filter(val => val[param] === paramVal)[0];
-        this.setState({ storageResult: register });
-        return register;
-      }
-      this.setState({ storageResult: listObj });
-      return null;
+      const params = getParams(this.props);
+      const param = Object.keys(params)[0];
+      const paramVal = params[Object.keys(params)[0]];
+      const register = listObj.filter(val => val[param] === paramVal)[0];
+      this.setState({ storageResult: register });
     };
 
     getAll = async () => {
       const list = await AsyncStorage.getItem(key);
       const listObj = JSON.parse(list);
-
       this.setState({ storageResult: listObj });
     };
 
@@ -62,8 +65,6 @@ export function withStorage(WrappedComponent, key, getParams) {
     };
 
     deleteRegister = async args => {
-      console.log(args, Object.keys(args)[0]);
-
       try {
         const existingItens = await AsyncStorage.getItem(key);
         const itens = JSON.parse(existingItens);
@@ -77,22 +78,27 @@ export function withStorage(WrappedComponent, key, getParams) {
       }
     };
 
-    // alterRegister = async () => {
-    //   const register = await this.getRegister();
-    //   AsyncStorage.mergeItem(key, )
-    // }
+    alterRegister = async values => {
+      const list = await AsyncStorage.getItem(key);
+      const listObj = JSON.parse(list);
+      const register = listObj.filter(val => val.id === values.id)[0];
+      await this.deleteRegister({ id: values.id });
+      await this.createRegister(register);
+    };
 
     render() {
       const { storageResult } = this.state;
       if (storageResult === null) {
-        return <Text>Loading...</Text>;
+        return <Text>...</Text>;
       }
+
       return (
         <WrappedComponent
           storageResult={storageResult}
           refreshStorage={this.refreshStorage}
           createRegister={this.createRegister}
           deleteRegister={this.deleteRegister}
+          alterRegister={this.alterRegister}
           {...this.props}
         />
       );

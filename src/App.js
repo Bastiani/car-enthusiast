@@ -1,11 +1,10 @@
 // @flow
+import * as React from "react";
+import styled from "styled-components/native";
 
-import * as React from 'react';
-import styled from 'styled-components/native';
+import { createRootNavigator } from "./routes";
 
-import { createRootNavigator } from './routes';
-
-import logo from './assets/img/logo_app.png';
+import logo from "./assets/img/logo_app.png";
 
 const Container = styled.View`
   flex: 1;
