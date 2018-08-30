@@ -4,15 +4,16 @@ import { AsyncStorage, Text } from "react-native";
 
 import { isFunction } from "../../utils";
 
-type Car = {
-  id: string,
-  manufacturer: string,
-  model: string,
-  year: string,
-  date: string
-};
+// type Car = {
+//   id: string,
+//   manufacturer: string,
+//   model: string,
+//   year: string,
+//   date: string
+// };
+
 type Props = {};
-type State = { storageResult: Array<Car> };
+type State = { storageResult: Array<Object> };
 
 export function withStorage(WrappedComponent, key, getParams) {
   return class extends React.Component<Props, State> {
@@ -27,8 +28,7 @@ export function withStorage(WrappedComponent, key, getParams) {
       const listObj = JSON.parse(list);
       const params = getParams(this.props);
       const param = Object.keys(params)[0];
-      const paramVal = params[Object.keys(params)[0]];
-      const register = listObj.filter(val => val[param] === paramVal)[0];
+      const register = listObj.filter(val => val[param] === params[param])[0];
       this.setState({ storageResult: register });
     };
 
@@ -62,8 +62,7 @@ export function withStorage(WrappedComponent, key, getParams) {
         const existingItens = await AsyncStorage.getItem(key);
         const itens = JSON.parse(existingItens);
         const param = Object.keys(args)[0];
-        const paramVal = args[Object.keys(args)[0]];
-        const newItens = itens.filter(val => val[param] != paramVal);
+        const newItens = itens.filter(val => val[param] != args[param]);
         await AsyncStorage.setItem(key, JSON.stringify(newItens));
         this.setState({ storageResult: newItens });
       } catch (error) {

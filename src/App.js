@@ -18,7 +18,7 @@ const Content = styled.View`
 
 const Header = styled.View`
   height: 60px;
-  background-color: #693668;
+  background-color: #2ec4b6;
 `;
 
 const Logo = styled.Image`

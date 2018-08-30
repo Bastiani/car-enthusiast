@@ -1,4 +1,3 @@
-// @flow
 import React from "react";
 import { ScrollView, Button } from "react-native";
 import styled from "styled-components/native";
