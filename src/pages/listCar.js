@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ScrollView, Button, RefreshControl } from "react-native";
+import { ScrollView, RefreshControl } from "react-native";
 import styled from "styled-components/native";
 
 import FlatListCustom from "../components/common/FlatListCustom";
@@ -45,10 +45,6 @@ class ListCar extends React.PureComponent {
     return (
       <ScrollView>
         <Container>
-          <Button
-            title="Create Car"
-            onPress={() => navigation.navigate("CreateCar")}
-          />
           {storageResult &&
             storageResult.length >= 1 && (
               <FlatListStyled

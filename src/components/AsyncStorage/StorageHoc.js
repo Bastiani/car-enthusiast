@@ -17,10 +17,18 @@ type State = { storageResult: Array<Object> };
 
 export function withStorage(WrappedComponent, key, getParams) {
   return class extends React.Component<Props, State> {
+    _hasUnmounted = false;
+
     state = { storageResult: null };
 
     async componentDidMount() {
-      isFunction(getParams) ? this.getRegister() : this.getAll();
+      if (!this._hasUnmounted) {
+        isFunction(getParams) ? this.getRegister() : this.getAll();
+      }
+    }
+
+    componentWillUnmount() {
+      this._hasUnmounted = true;
     }
 
     getRegister = async () => {

@@ -1,40 +1,45 @@
-import { createStackNavigator } from 'react-navigation';
+import { createDrawerNavigator } from "react-navigation";
 
-import ListCar from './pages/listCar';
-import CreateCar from './pages/createCar';
-import ViewCar from './pages/viewCar';
+import ListCar from "./pages/listCar";
+import CreateCar from "./pages/createCar";
+import ViewCar from "./pages/viewCar";
+import CreateOilChange from "./pages/createOilChange";
 
-export const CarRoutes = createStackNavigator({
+export const CarRoutes = {
   ListCar: {
     screen: ListCar,
     navigationOptions: {
-      title: 'List Car',
-    },
+      title: "List Car"
+    }
   },
   CreateCar: {
     screen: CreateCar,
     navigationOptions: {
-      title: 'Create Car',
-    },
+      title: "Create Car"
+    }
   },
   ViewCar: {
     screen: ViewCar,
     navigationOptions: {
-      title: 'Car Details',
-    },
+      title: "Car Details",
+      drawerLabel: () => null
+    }
   },
-});
-
-export const createRootNavigator = () => createStackNavigator(
-  {
-    Car: { screen: CarRoutes },
-  },
-  {
-    headerMode: 'none',
-    mode: 'modal',
-    initialRouteName: 'Car',
+  CreateOilChange: {
+    screen: CreateOilChange,
     navigationOptions: {
-      gesturesEnabled: false,
+      title: "Oil Change",
+      drawerLabel: () => null
+    }
+  }
+};
+
+export const createRootNavigator = () =>
+  createDrawerNavigator(
+    {
+      ...CarRoutes
     },
-  },
-);
+    {
+      initialRouteName: "ListCar"
+    }
+  );

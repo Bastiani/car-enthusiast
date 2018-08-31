@@ -16,13 +16,19 @@ const Container = styled.View`
   padding: 5px;
 `;
 
-const ViewCar = ({ handleSubmit }) => (
+const ViewCar = ({ handleSubmit, navigation, storageResult }) => (
   <ScrollView>
     <Container>
       <TextField label="Manufacturer" name="manufacturer" />
       <TextField label="Model" name="model" />
       <TextField label="Year" name="year" />
       <Button title="Save" onPress={handleSubmit} />
+      <Button
+        title="Oil Change"
+        onPress={() =>
+          navigation.navigate("CreateOilChange", { carId: storageResult.id })
+        }
+      />
     </Container>
   </ScrollView>
 );
