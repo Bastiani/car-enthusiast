@@ -3,7 +3,6 @@ import { createDrawerNavigator } from "react-navigation";
 import ListCar from "./pages/listCar";
 import CreateCar from "./pages/createCar";
 import ViewCar from "./pages/viewCar";
-import CreateOilChange from "./pages/createOilChange";
 
 export const CarRoutes = {
   ListCar: {
@@ -22,13 +21,6 @@ export const CarRoutes = {
     screen: ViewCar,
     navigationOptions: {
       title: "Car Details",
-      drawerLabel: () => null
-    }
-  },
-  CreateOilChange: {
-    screen: CreateOilChange,
-    navigationOptions: {
-      title: "Oil Change",
       drawerLabel: () => null
     }
   }

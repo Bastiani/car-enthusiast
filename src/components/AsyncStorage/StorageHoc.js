@@ -32,12 +32,23 @@ export function withStorage(WrappedComponent, key, getParams) {
     }
 
     getRegister = async () => {
-      const list = await AsyncStorage.getItem(key);
-      const listObj = JSON.parse(list);
-      const params = getParams(this.props);
-      const param = Object.keys(params)[0];
-      const register = listObj.filter(val => val[param] === params[param])[0];
-      this.setState({ storageResult: register });
+      try {
+        const list = await AsyncStorage.getItem(key);
+        const listObj = JSON.parse(list);
+        if (listObj) {
+          const params = getParams(this.props);
+          const param = Object.keys(params)[0];
+          const register = listObj.filter(
+            val => val[param] === params[param]
+          )[0];
+          this.setState({ storageResult: register });
+        } else {
+          this.setState({ storageResult: {} });
+        }
+      } catch (error) {
+        this.setState({ storageResult: {} });
+        throw error;
+      }
     };
 
     getAll = async () => {
@@ -58,7 +69,7 @@ export function withStorage(WrappedComponent, key, getParams) {
         }
         newItens.push(values);
         await AsyncStorage.setItem(key, JSON.stringify(newItens));
-        this.setState({ storageResult: newItens });
+        this.setState({ storageResult: values });
       } catch (error) {
         alert(error);
         throw error;
@@ -72,7 +83,7 @@ export function withStorage(WrappedComponent, key, getParams) {
         const param = Object.keys(args)[0];
         const newItens = itens.filter(val => val[param] != args[param]);
         await AsyncStorage.setItem(key, JSON.stringify(newItens));
-        this.setState({ storageResult: newItens });
+        // this.setState({ storageResult: newItens });
       } catch (error) {
         throw error;
       }
