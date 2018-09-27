@@ -1,26 +1,9 @@
 import * as React from "react";
-import { View } from "react-native";
+import { View, Text } from "react-native";
 import styled from "styled-components/native";
 import get from "lodash/get";
 import { connect } from "formik";
-
-const Input = styled.TextInput`
-  border-bottom-color: #383736;
-  border-top-color: #383736;
-  border-left-color: #383736;
-  border-right-color: #383736;
-  border-width: 2px;
-  margin-bottom: 10px;
-  padding: -2px;
-  color: #605f5e;
-  background-color: #d9d4cc;
-  padding-left: 5px;
-  padding-right: 5px;
-
-  /* &:focus {
-    background-color: #6b2b13;
-  } */
-`;
+import DatePicker from "react-native-datepicker";
 
 const Label = styled.Text`
   color: #74716f;
@@ -33,11 +16,10 @@ const Error = styled.Text`
 `;
 
 class TextFieldFormik extends React.Component {
-  handleChange = event => {
+  handleChange = date => {
     const { name, formik } = this.props;
-    const { text } = event.nativeEvent;
 
-    formik.setFieldValue(name, text);
+    formik.setFieldValue(name, date);
   };
 
   render() {
@@ -50,9 +32,28 @@ class TextFieldFormik extends React.Component {
     return (
       <View>
         <Label>{label}</Label>
-        <Input
-          value={value}
-          onChange={evt => this.handleChange(evt)}
+        <DatePicker
+          style={{ width: 200 }}
+          date={value}
+          mode="date"
+          placeholder="select date"
+          format="DD-MM-YYYY"
+          // minDate="2016-05-01"
+          // maxDate="2016-06-01"
+          confirmBtnText="Confirm"
+          cancelBtnText="Cancel"
+          customStyles={{
+            dateIcon: {
+              position: "absolute",
+              left: 0,
+              top: 4,
+              marginLeft: 0
+            },
+            dateInput: {
+              marginLeft: 36
+            }
+          }}
+          onDateChange={evt => this.handleChange(evt)}
           {...this.props}
         />
         {fieldError && <Error>{fieldError}</Error>}

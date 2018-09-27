@@ -4,6 +4,10 @@ import styled from "styled-components/native";
 import get from "lodash/get";
 import { connect } from "formik";
 
+const Label = styled.Text`
+  color: #ccc5b9;
+`;
+
 const Error = styled.Text`
   color: #f44453;
   margin-top: -9px;
@@ -26,7 +30,7 @@ class SwitchFormik extends React.Component {
 
     return (
       <View>
-        <Text>{label}</Text>
+        <Label>{label}</Label>
         <Switch
           value={value}
           onValueChange={value => this.handleChange(value)}

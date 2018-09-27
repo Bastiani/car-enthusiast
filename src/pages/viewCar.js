@@ -7,10 +7,13 @@ import * as yup from "yup";
 import idx from "idx";
 
 import OilChange from "./oilChange";
-
 import { withStorage } from "../components/AsyncStorage/StorageHoc";
-
 import TextField from "../components/common/TextFieldFormik";
+import CommonPage from "./commonPage";
+
+const ButtonStyled = styled.Button`
+  background-color: #813416;
+`;
 
 const Container = styled.View`
   flex: 1;
@@ -19,15 +22,17 @@ const Container = styled.View`
 `;
 
 const ViewCar = ({ handleSubmit, navigation, storageResult }) => (
-  <ScrollView>
-    <Container>
-      <TextField label="Manufacturer" name="manufacturer" />
-      <TextField label="Model" name="model" />
-      <TextField label="Year" name="year" />
-      <Button title="Save" onPress={handleSubmit} />
-      <OilChange carId={storageResult.id} />
-    </Container>
-  </ScrollView>
+  <CommonPage navigation={navigation}>
+    <ScrollView>
+      <Container>
+        <TextField label="Manufacturer" name="manufacturer" />
+        <TextField label="Model" name="model" />
+        <TextField label="Year" name="year" />
+        <ButtonStyled title="Save" onPress={handleSubmit} />
+        <OilChange carId={storageResult.id} />
+      </Container>
+    </ScrollView>
+  </CommonPage>
 );
 
 const formWithFormik = withFormik({

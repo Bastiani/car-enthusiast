@@ -8,6 +8,7 @@ import moment from "moment";
 import TextField from "../components/common/TextFieldFormik";
 import { withStorage } from "../components/AsyncStorage/StorageHoc";
 import { objectId } from "../utils";
+import CommonPage from "./commonPage";
 
 const Container = styled.View`
   flex: 1;
@@ -15,15 +16,17 @@ const Container = styled.View`
   padding: 10px;
 `;
 
-const Form = ({ handleSubmit }) => (
-  <ScrollView>
-    <Container>
-      <TextField label="Manufacturer" name="manufacturer" />
-      <TextField label="Model" name="model" />
-      <TextField label="Year" name="year" />
-      <Button title="Save" onPress={handleSubmit} />
-    </Container>
-  </ScrollView>
+const Form = ({ handleSubmit, navigation }) => (
+  <CommonPage navigation={navigation}>
+    <ScrollView>
+      <Container>
+        <TextField label="Manufacturer" name="manufacturer" />
+        <TextField label="Model" name="model" />
+        <TextField keyboardType="number" label="Year" name="year" />
+        <Button title="Save" onPress={handleSubmit} />
+      </Container>
+    </ScrollView>
+  </CommonPage>
 );
 
 const createCarForm = withFormik({

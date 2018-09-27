@@ -4,6 +4,7 @@ import styled from "styled-components/native";
 
 import FlatListCustom from "../components/common/FlatListCustom";
 import { withStorage } from "../components/AsyncStorage/StorageHoc";
+import CommonPage from "./commonPage";
 
 const Container = styled.View`
   flex: 1;
@@ -43,24 +44,26 @@ class ListCar extends React.PureComponent {
     const { refreshing } = this.state;
 
     return (
-      <ScrollView>
-        <Container>
-          {storageResult &&
-            storageResult.length >= 1 && (
-              <FlatListStyled
-                data={storageResult}
-                onItemClick={id => this.handleCarView(id)}
-                deleteRegister={deleteRegister}
-                refreshControl={(
-                  <RefreshControl
-                    refreshing={refreshing}
-                    onRefresh={this.onRefresh}
-                  />
+      <CommonPage navigation={navigation}>
+        <ScrollView>
+          <Container>
+            {storageResult &&
+              storageResult.length >= 1 && (
+                <FlatListStyled
+                  data={storageResult}
+                  onItemClick={id => this.handleCarView(id)}
+                  deleteRegister={deleteRegister}
+                  refreshControl={(
+                    <RefreshControl
+                      refreshing={refreshing}
+                      onRefresh={this.onRefresh}
+                    />
 )}
-              />
-            )}
-        </Container>
-      </ScrollView>
+                />
+              )}
+          </Container>
+        </ScrollView>
+      </CommonPage>
     );
   }
 }

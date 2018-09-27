@@ -1,6 +1,19 @@
 import * as React from "react";
-import { TouchableOpacity, View, Text, Alert } from "react-native";
+import { Text, Alert } from "react-native";
 import Swipeout from "react-native-swipeout";
+import styled from "styled-components/native";
+
+const ButtonStyled = styled.TouchableOpacity`
+  flex: 1;
+  background-color: #fdfffc;
+  height: 50px;
+  align-items: center;
+  justify-content: center;
+  border-bottom-width: 1px;
+  border-bottom-color: black;
+  border-top-color: black;
+  border-top-width: 1px;
+`;
 
 class ListItem extends React.PureComponent {
   _onPress = () => {
@@ -10,8 +23,8 @@ class ListItem extends React.PureComponent {
 
   render() {
     const { title, deleteRegister } = this.props;
-    // const textColor = selected ? "red" : "black";
     const swipeProps = {
+      backgroundColor: "#fdfffc",
       autoClose: true,
       right: [
         {
@@ -32,11 +45,9 @@ class ListItem extends React.PureComponent {
     };
     return (
       <Swipeout {...swipeProps}>
-        <TouchableOpacity onPress={this._onPress}>
-          <View>
-            <Text>{title}</Text>
-          </View>
-        </TouchableOpacity>
+        <ButtonStyled onPress={this._onPress}>
+          <Text>{title}</Text>
+        </ButtonStyled>
       </Swipeout>
     );
   }

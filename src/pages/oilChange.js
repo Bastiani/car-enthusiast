@@ -9,8 +9,8 @@ import moment from "moment";
 
 import { withStorage } from "../components/AsyncStorage/StorageHoc";
 import { objectId } from "../utils";
-
 import TextField from "../components/common/TextFieldFormik";
+import DatePicker from "../components/common/DatePickerFormik";
 import Switch from "../components/common/SwitchFormik";
 
 const Container = styled.View`
@@ -19,13 +19,25 @@ const Container = styled.View`
   padding: 5px;
 `;
 
-const OilChange = ({ handleSubmit }) => (
+const OilChange = ({ handleSubmit, navigation }) => (
   <ScrollView>
     <Container>
-      <TextField label="Date Last Change" name="dateLastChange" />
-      <TextField label="Km Last Change" name="kmLastChange" />
-      <TextField label="Km Next Change" name="kmNextChange" />
-      <TextField label="Avg. Km Per Day" name="avgKmPerDay" />
+      <DatePicker label="Date Last Change" name="dateLastChange" />
+      <TextField
+        label="Km Last Change"
+        name="kmLastChange"
+        keyboardType="number"
+      />
+      <TextField
+        label="Km Next Change"
+        name="kmNextChange"
+        keyboardType="number"
+      />
+      <TextField
+        label="Avg. Km Per Day"
+        name="avgKmPerDay"
+        keyboardType="number"
+      />
       <Switch label="Notification When Changing The Oil?" name="notification" />
       <Button title="Save" onPress={handleSubmit} />
     </Container>
